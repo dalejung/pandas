@@ -1031,11 +1031,6 @@ class Panel(NDFrame):
         -------
         shifted : Panel
         """
-        values = self.values
-        items = self.items
-        major_axis = self.major_axis
-        minor_axis = self.minor_axis
-
         if freq:
             return self.tshift(lags, freq, axis=axis)
 
