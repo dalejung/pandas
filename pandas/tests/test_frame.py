@@ -8338,6 +8338,15 @@ class TestDataFrame(unittest.TestCase, CheckIndexing,
         assertRaisesRegexp(ValueError, 'does not match PeriodIndex freq',
                            ps.shift, freq='D')
 
+    def test_shift_columns(self):
+        df = tm.makeTimeDataFrame()
+
+        shifted = df.shift(1, axis='columns')
+        self.assert_(shifted['A'].isnull().all())
+
+        self.assert_(shifted.columns.equals(df.columns))
+        tm.assert_series_equal(shifted['B'], df['A'])
+
     def test_shift_bool(self):
         df = DataFrame({'high': [True, False],
                         'low': [False, False]})
