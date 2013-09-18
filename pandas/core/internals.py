@@ -771,13 +771,13 @@ class Block(PandasObject):
         else: 
             fill_slice = slice(periods, None)
 
-        # 1-d
-        if self.ndim == 1:
-            new_values[fill_slice] = fill_value
+        # [:, :, fill_slice] <-> [slice(None), slice(None), fill_slice]
+        ax_slices = [slice(None) for x in range(axis+1)]
+        ax_slices[axis] = fill_slice
+        ax_slices = tuple(ax_slices)
 
-        # 2-d
-        else:
-            new_values[:, fill_slice] = fill_value
+        new_values[ax_slices] = fill_value
+
         return [make_block(new_values, self.items, self.ref_items, ndim=self.ndim, fastpath=True)]
 
     def eval(self, func, other, raise_on_error=True, try_cast=False):
