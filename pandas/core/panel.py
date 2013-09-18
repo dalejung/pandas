@@ -1116,8 +1116,7 @@ class Panel(NDFrame):
 
     def shift(self, lags, freq=None, axis='major'):
         """
-        Shift major or minor axis by specified number of leads/lags. Drops
-        periods right now compared with DataFrame.shift
+        Shift major or minor axis by specified number of leads/lags. 
 
         Parameters
         ----------
