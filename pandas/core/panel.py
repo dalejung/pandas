@@ -1039,27 +1039,10 @@ class Panel(NDFrame):
         if freq:
             return self.tshift(lags, freq, axis=axis)
 
-        if lags > 0:
-            vslicer = slice(None, -lags)
-            islicer = slice(lags, None)
-        elif lags == 0:
-            vslicer = islicer = slice(None)
-        else:
-            vslicer = slice(-lags, None)
-            islicer = slice(None, lags)
-
-        axis = self._get_axis_name(axis)
-        if axis == 'major_axis':
-            values = values[:, vslicer, :]
-            major_axis = major_axis[islicer]
-        elif axis == 'minor_axis':
-            values = values[:, :, vslicer]
-            minor_axis = minor_axis[islicer]
-        else:
+        if axis == 'items':
             raise ValueError('Invalid axis')
 
-        return self._constructor(values, items=items, major_axis=major_axis,
-                                 minor_axis=minor_axis)
+        return super(Panel, self).shift(lags, freq=freq, axis=axis)
 
     def tshift(self, periods=1, freq=None, axis='major', **kwds):
         return super(Panel, self).tshift(periods, freq, axis, **kwds)
