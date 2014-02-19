@@ -386,7 +386,7 @@ def test_equal(name):
 def test_unequal(name):
     df, df2 = pairs[name]
     return df.equals(df2)
-    
+
 float_df = DataFrame(np.random.randn(1000, 1000))
 object_df = DataFrame([['foo']*1000]*1000)
 nonunique_cols = object_df.copy()
@@ -429,3 +429,16 @@ frame_interpolate_some_good_infer = Benchmark('df.interpolate(downcast="infer")'
                                               setup,
                                               start_date=datetime(2014, 2, 7))
 
+#
+#-------------------------------------------------------------------------
+# frame shift issue-5609
+
+setup = common_setup + """
+df = pd.DataFrame(np.random.rand(10000,500))
+"""
+frame_shift_axis0 = Benchmark('df.shift(1,axis=0)', setup,
+                    name = 'frame_shift_axis_0',
+                    start_date=datetime(2014,1,1))
+frame_shift_axis1 = Benchmark('df.shift(1,axis=1)', setup,
+                    name = 'frame_shift_axis_1',
+                    start_date=datetime(2014,1,1))
