@@ -966,7 +966,13 @@ class Block(PandasObject):
         # convert integer to float if necessary. need to do a lot more than
         # that, handle boolean etc also
         new_values, fill_value = com._maybe_upcast(self.values)
-        new_values = np.roll(new_values.T,periods,axis=axis)
+        f_ordered = new_values.flags.f_contiguous
+
+        if f_ordered:
+            new_values = new_values.T
+
+        new_values = np.roll(new_values,periods,axis=axis)
+
         axis_indexer = [ slice(None) ] * self.ndim
         if periods > 0:
             axis_indexer[axis] = slice(None,periods)
@@ -974,7 +980,11 @@ class Block(PandasObject):
             axis_indexer[axis] = slice(periods,None)
         new_values[tuple(axis_indexer)] = fill_value
 
-        return [make_block(new_values.T, self.items, self.ref_items,
+        # if we were originally f_ordered, return it back
+        if f_ordered:
+            new_values = new_values.T
+
+        return [make_block(new_values, self.items, self.ref_items,
                            ndim=self.ndim, fastpath=True)]
 
     def eval(self, func, other, raise_on_error=True, try_cast=False):
