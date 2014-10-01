@@ -6,6 +6,7 @@ import gc
 
 import numpy as np
 import pandas.lib as lib
+from abc import ABCMeta
 
 import pandas as pd
 from pandas.core.base import PandasObject
@@ -68,7 +69,8 @@ def _single_replace(self, to_replace, method, inplace, limit):
     return result
 
 
-class NDFrame(PandasObject):
+class NDFrame(PandasObject, metaclass=ABCMeta):
+
     """
     N-dimensional analogue of DataFrame. Store multi-dimensional in a
     size-mutable, labeled data structure
