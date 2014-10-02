@@ -68,8 +68,10 @@ def _single_replace(self, to_replace, method, inplace, limit):
 
     return result
 
+class PandasMeta(ABCMeta):
+    pass
 
-class NDFrame(PandasObject, metaclass=ABCMeta):
+class NDFrame(PandasObject, metaclass=PandasMeta):
 
     """
     N-dimensional analogue of DataFrame. Store multi-dimensional in a
