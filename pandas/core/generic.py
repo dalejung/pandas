@@ -68,8 +68,10 @@ def _single_replace(self, to_replace, method, inplace, limit):
 
     return result
 
+
 class NDFrameMeta(ABCMeta):
     pass
+
 
 class NDFrame(compat.with_metaclass(NDFrameMeta, PandasObject)):
 
